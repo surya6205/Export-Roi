@@ -7,8 +7,20 @@ interface FirebaseLoginProps {
   onLogin: () => void;
 }
 
+/*
+ * LOGIN SETTINGS
+ * --------------------------------------------------
+ * Yahan se User ID change kar sakte ho.
+ *
+ * Firebase ka actual email internally use hoga,
+ * isliye existing Firebase UID aur Firestore data
+ * bilkul same rahenge.
+ */
+const LOGIN_USER_ID = 'Pioneerjaipur';
+const FIREBASE_LOGIN_EMAIL = 'rk7033154856@gmail.com';
+
 export function FirebaseLogin({ onLogin }: FirebaseLoginProps) {
-  const [email, setEmail] = useState('');
+  const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -16,8 +28,13 @@ export function FirebaseLogin({ onLogin }: FirebaseLoginProps) {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email.trim() || !password) {
-      setError('Email aur password dono enter karein.');
+    if (!userId.trim() || !password) {
+      setError('User ID aur password dono enter karein.');
+      return;
+    }
+
+    if (userId.trim() !== LOGIN_USER_ID) {
+      setError('User ID ya password galat hai.');
       return;
     }
 
@@ -27,7 +44,7 @@ export function FirebaseLogin({ onLogin }: FirebaseLoginProps) {
     try {
       await signInWithEmailAndPassword(
         auth,
-        email.trim(),
+        FIREBASE_LOGIN_EMAIL,
         password
       );
 
@@ -40,7 +57,7 @@ export function FirebaseLogin({ onLogin }: FirebaseLoginProps) {
         err.code === 'auth/wrong-password' ||
         err.code === 'auth/user-not-found'
       ) {
-        setError('Email ya password galat hai.');
+        setError('User ID ya password galat hai.');
       } else if (err.code === 'auth/too-many-requests') {
         setError('Bahut attempts ho gaye. Thodi der baad try karein.');
       } else {
@@ -74,15 +91,15 @@ export function FirebaseLogin({ onLogin }: FirebaseLoginProps) {
 
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Email
+                User ID
               </label>
 
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                autoComplete="email"
+                type="text"
+                value={userId}
+                onChange={(e) => setUserId(e.target.value)}
+                placeholder="Enter your User ID"
+                autoComplete="username"
                 className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
               />
             </div>
