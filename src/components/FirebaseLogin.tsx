@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserSessionPersistence,
+} from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { LogIn, AlertCircle, Loader2 } from 'lucide-react';
 
@@ -42,6 +46,10 @@ export function FirebaseLogin({ onLogin }: FirebaseLoginProps) {
     setError('');
 
     try {
+      // Login sirf current browser session tak rahega.
+      // Browser close hone ke baad dobara login karna padega.
+      await setPersistence(auth, browserSessionPersistence);
+
       await signInWithEmailAndPassword(
         auth,
         FIREBASE_LOGIN_EMAIL,
