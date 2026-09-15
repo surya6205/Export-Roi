@@ -1,0 +1,6 @@
+{
+  "name": "Export ROI & Costing Dashboard",
+  "description": "Export ROI & Costing Dashboard with automated weight calculation, expense tracking, net value, and final rate analysis.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
